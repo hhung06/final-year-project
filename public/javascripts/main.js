@@ -1,7 +1,10 @@
 var socket = io("http://localhost:3000");
 //client send data to server
-$(document).ready(function() {
-});
+socket.on("server-update-data", function(data) {
+    $('#currentTemp').html(data.temp);
+    $('#currentHumi').html(data.humi);
+    $('#currentLight').html(data.light);
+})
 
 function led1() {
     var checkBox = document.getElementById("led1");
