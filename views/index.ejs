@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="icon" type="image/x-icon" href="/images/logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+  </head>
+  <body>
+    <div class="container h-100">
+      <div class="row d-flex flex-row my-3">
+        <div class="col">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <div class="row d-flex flex-row px-4 align-items-center">
+                <div class="mr-4 rounded-circle p-3" style="background-color: #E0F3F3;">
+                  <img src="/images/humidity.png" style="width: 24px; height: 24px;" alt="">
+                </div>
+                <div>
+                  <h5 class="card-title my-1 text-muted">Humidity</h5>
+                  <span class="h4 font-weight-bold">80</span>
+                  <span class="text-muted">%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <div class="row d-flex flex-row px-4 align-items-center">
+                <div class="mr-4 rounded-circle p-3" style="background-color: #FFF1F2;">
+                  <img src="/images/temperature.png" style="width: 24px; height: 24px;" alt="">
+                </div>
+                <div>
+                  <h5 class="card-title my-1 text-muted">Temperature:</h5>
+                  <span class="h4 font-weight-bold">25</span>
+                  <span class="text-muted">℃</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <div class="row d-flex flex-row px-4 align-items-center">
+                <div class="mr-4 rounded-circle p-3" style="background-color: #FFFBEB;">
+                  <img src="/images/sun.png" style="width: 24px; height: 24px;" alt="">
+                </div>
+                <div>
+                  <h5 class="card-title my-1 text-muted">Light</h5>
+                  <span class="h4 font-weight-bold">100</span>
+                  <span class="text-muted">Lux</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row d-lfex flex-row">
+        <div class="col-9">
+          <figure class="highcharts-figure border bg-white rounded shadow-sm">
+            <div id="chart"></div>
+            <p class="highcharts-description text-center">
+              Chart showing data loaded dynamically. The individual data points can
+              be clicked to display more information.
+            </p>
+          </figure>
+        </div>
+        <div class="col-3 d-flex flex-column">
+          <div class="row-sm mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="row d-flex flex-row px-5 align-items-center">
+                  <div class="mr-4 rounded-circle p-3" style="background-color: #FFFBEB;">
+                    <img src="/images/led.png" style="width: 32px; height: 32px;" alt="">
+                  </div>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="led1" onclick="led1()">
+                    <label class="custom-control-label h5" for="led1">Led 1</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-sm mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="row d-flex flex-row px-5 align-items-center">
+                  <div class="mr-4 rounded-circle p-3" style="background-color: #FFFBEB;">
+                    <img src="/images/led.png" style="width: 32px; height: 32px;" alt="">
+                  </div>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="led2" onclick="led2()">
+                    <label class="custom-control-label h5" for="led2">Led 2</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-sm mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="row d-flex flex-row px-5 align-items-center">
+                  <div class="mr-4 rounded-circle p-3" style="background-color: #FFFBEB;">
+                    <img src="/images/led.png" style="width: 32px; height: 32px;" alt="">
+                  </div>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="led3" onclick="led3()">
+                    <label class="custom-control-label h5" for="led3">Led 3</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row-flex">
+        <div class="table-responsive border rounded bg-white shadow-sm">
+          <table class="table">
+            <thead style="background-color: #E0DDDD;">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Date</th>
+                <th scope="col">Humidity</th>
+                <th scope="col">Temperature</th>
+                <th scope="col">Light</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td id="number">1</td>
+                <td id="date">2022/11/21 - 3:21:54 </td>
+                <td id="humid">80 %</td>
+                <td id="temp">25 ℃</td>
+                <td id="light">100 lux</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="/javascripts/main.js"></script>
+    <script src="/javascripts/chart.js"></script>
+  </body>
+</html>
