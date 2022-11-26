@@ -6,6 +6,10 @@ socket.on("server-update-data", function(data) {
     $('#currentLight').html(data.light);
 })
 
+socket.on("send-full", function(data) {
+
+})
+
 function led1() {
     var checkBox = document.getElementById("led1");
     if (checkBox.checked == true) {

@@ -21,30 +21,30 @@ io.on('connection', function(socket) {
 	socket.on('led-1-change', function(data) {
 		if (data == 'on') {
 			console.log('Led 1 ON');
-			// client.publish('led1', 'On');
+			client.publish('led1', 'On');
 		} else {
 			console.log('Led 1 OFF');
-			// client.publish('led1', 'Off');
+			client.publish('led1', 'Off');
 		}
 	})
 
 	socket.on('led-2-change', function(data) {
 		if (data == 'on') {
 			console.log('Led 2 ON');
-			// client.publish('led1', 'On');
+			client.publish('led1', 'On');
 		} else {
 			console.log('Led 2 OFF');
-			// client.publish('led1', 'Off');
+			client.publish('led1', 'Off');
 		}
 	})
 
 	socket.on('led-3-change', function(data) {
 		if (data == 'on') {
 			console.log('Led 3 ON');
-			// client.publish('led1', 'On');
+			client.publish('led1', 'On');
 		} else {
 			console.log('Led 3 OFF');
-			// client.publish('led1', 'Off');
+			client.publish('led1', 'Off');
 		}
 	})
 
@@ -78,7 +78,7 @@ var options = {
 	password: '',
 };
 var client = mqtt.connect(options);
-var topic = 'hethongso';
+var topic = 'hung1406';
 
 client.on('connect', function() {
   	console.log('mqtt connect: ' + client.connected);
@@ -123,9 +123,9 @@ client.on('message', function (topic, message, packet) {
 	
 	if (topic == topic) {
 		cnt_check = cnt_check + 1;
-		newTemp = objData.Temperature;
-		newHumi = objData.Humidity;
-		newLight = objData.Light;
+		newTemp = objData.temp;
+		newHumi = objData.humi;
+		newLight = objData.light;
 	}
 
 	if (cnt_check == 1) {
