@@ -1,88 +1,105 @@
-Highcharts.chart('chart', {
+var chart = Highcharts.chart('chart', {
     chart: {
-        reflow: true,
-        zoomType: 'xy',
-        events: {
-            load: function(){
-                var categories = this.xAxis[0].categories;
-                var series1 = this.series[0]
-                var series2 = this.series[1]
-                socket.on("server-update-data", function (data) {
-                    var x = data.time; 
-                    var y = data.temp;  
-                    var z = data.humi;
-                    if (series1.data.length == 5) {
-                        series1.data.shift()
-                    }
-                    if (series1.data.length == 5) {
-                        series2.data.shift()
-                    }
-                    series1.data.push(y)
-                    series2.data.push(z)
-                    categories.push(data.time)
-                });
-            }
-        }
+        zoomType: 'xy'
     },
     title: {
-        text: 'Humidity - Temperature'
+        text: 'Đồ thị nhiệt độ - độ ẩm'
     },
+
     xAxis: [{
-        categories: []
+        categories: [],
+        tickWidth: 1,
+        tickLength: 20
     }],
     yAxis: [{ // Primary yAxis
         labels: {
             format: '{value}',
             style: {
-                color: Highcharts.getOptions().colors[0]
+                color: Highcharts.getOptions().colors[1]
             }
         },
         title: {
-            text: 'Humidity (%)',
+            text: 'Nhiệt độ (°C)',
             style: {
-                color: Highcharts.getOptions().colors[0]
+                color: Highcharts.getOptions().colors[1]
             }
         },
     }, { // Secondary yAxis
         title: {
-            text: 'Temperature (°C)',
+            text: 'Độ ẩm(%)',
             style: {
-                color: Highcharts.getOptions().colors[1]
+                color: Highcharts.getOptions().colors[0]
             }
         },
         labels: {
             format: '{value}',
             style: {
-                color: Highcharts.getOptions().colors[1]
+                color: Highcharts.getOptions().colors[0]
             }
         },
         opposite: true
     }],
     tooltip: {
-        shared: true,
+        shared: true
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'left',
+        x: 120,
+        verticalAlign: 'top',
+        y: 100,
+        floating: true,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || // theme
+            'rgba(255,255,255,0.25)'
     },
     series: [{
-        name: 'Humidity',
+        name: 'Độ ẩm',
         type: 'column',
         yAxis: 1,
         data: [],
         tooltip: {
             valueSuffix: '%'
         }
+
     }, {
-        name: 'Temperature',
-        color: '#8B0000',
-        type: 'column',
+        name: 'Nhiệt độ',
+        type: 'spline',
         data: [],
         tooltip: {
             valueSuffix: '°C'
         },
+        zones: [{
+            value: 10,
+            color: '#ff0015'
+        }, {
+            value: 30,
+            color: '#141107'
+        }, {
+            color: '#ff0015'
+        }],
     }],
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 991.98,
-            },
-        }]
-    }
 });
+
+socket.on("server-send-humi_graph", function (data) {
+    chart.series[0].setData(data);
+});
+
+socket.on("server-send-temp_graph", function (data) {
+    chart.series[1].setData(data);
+});
+
+socket.on("server-send-date_graph", function (data) {
+    chart.xAxis[0].setCategories(data);
+});
+
+// ------------- RTC ------------
+var timeDisplay = document.getElementById("time");
+
+function refreshTime() {
+    var dateString = new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+    var formattedString = dateString.replace(", ", " - ");
+    timeDisplay.innerHTML = formattedString;
+}
+
+setInterval(refreshTime, 1000);
