@@ -1,8 +1,5 @@
 function exportData(con, io) {
     var m_time;
-    var newTemp;
-    var newHumi;
-    var newLight;
     var sql1 = 'SELECT * FROM sensors ORDER BY ID DESC LIMIT 1';
 
     con.query(sql1, function (err, result, fields) {

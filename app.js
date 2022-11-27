@@ -21,10 +21,10 @@ io.on('connection', function(socket) {
 	socket.on('led-1-change', function(data) {
 		if (data == 'on') {
 			console.log('Led 1 ON');
-			client.publish('led1', 'On');
+			client.publish('relay', 'on');
 		} else {
 			console.log('Led 1 OFF');
-			client.publish('led1', 'Off');
+			client.publish('relay', 'off');
 		}
 	})
 
@@ -70,15 +70,15 @@ io.on('connection', function(socket) {
 });
 
 // mqtt
-var options = {
-	host: 'broker.emqx.io',
-	port: 8883,
-	protocol: 'mqtts',
-	username: '',
-	password: '',
-};
-var client = mqtt.connect(options);
-var topic = 'hung1406';
+// var options = {
+// 	host: 'broker.emqx.io',
+// 	port: 1883,
+// 	protocol: 'mqtts',
+// 	username: '',
+// 	password: '',
+// };
+var client = mqtt.connect('mqtt://broker.emqx.io:1883', {clientID: 'ndhieu131020'});
+var topic = 'ndhieu131020data';
 
 client.on('connect', function() {
   	console.log('mqtt connect: ' + client.connected);
@@ -123,9 +123,9 @@ client.on('message', function (topic, message, packet) {
 	
 	if (topic == topic) {
 		cnt_check = cnt_check + 1;
-		newTemp = objData.temp;
-		newHumi = objData.humi;
-		newLight = objData.light;
+		newTemp = objData.Temperature;
+		newHumi = objData.Humidity;
+		newLight = objData.GasConcentration;
 	}
 
 	if (cnt_check == 1) {
