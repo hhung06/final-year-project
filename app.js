@@ -14,10 +14,10 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 server.listen(3000);
 
+// control relay
 io.on('connection', function(socket) {
 	socket.on('disconnect', function() {});
 
-	// control led
 	socket.on('led-1-change', function(data) {
 		if (data == 'on') {
 			console.log('Led 1 ON');
@@ -27,56 +27,9 @@ io.on('connection', function(socket) {
 			client.publish('relay', 'off');
 		}
 	})
-
-	socket.on('led-2-change', function(data) {
-		if (data == 'on') {
-			console.log('Led 2 ON');
-			client.publish('led1', 'On');
-		} else {
-			console.log('Led 2 OFF');
-			client.publish('led1', 'Off');
-		}
-	})
-
-	socket.on('led-3-change', function(data) {
-		if (data == 'on') {
-			console.log('Led 3 ON');
-			client.publish('led1', 'On');
-		} else {
-			console.log('Led 3 OFF');
-			client.publish('led1', 'Off');
-		}
-	})
-
-	// send data to history page
-	var sql1 = 'SELECT * FROM sensors ORDER BY ID';
-
-	con.query(sql1, function (err, result, fields) {
-		if (err) throw err;
-		console.log('Data updated');
-		var fullData = [];
-		result.forEach(function (value) {
-			var m_time = value.Time.toString().slice(4, 24);
-			fullData.push({
-				id: value.ID,
-				time: m_time,
-				temp: value.Temperature,
-				humi: value.Humidity,
-				light: value.Light
-			});
-		});
-		io.sockets.emit('send-full', fullData);
-	});
 });
 
 // mqtt
-// var options = {
-// 	host: 'broker.emqx.io',
-// 	port: 1883,
-// 	protocol: 'mqtts',
-// 	username: '',
-// 	password: '',
-// };
 var client = mqtt.connect('mqtt://broker.emqx.io:1883', {clientID: 'ndhieu131020'});
 var topic = 'ndhieu131020data';
 
@@ -100,21 +53,28 @@ var con = mysql.createConnection({
 	database: 'hts',
 });
 
-var newTemp;
-var newHumi;
-var newLight;
-var cnt_check = 0;
-
 con.connect(function(err) {
-	var sql = 'CREATE TABLE IF NOT EXISTS sensors (ID INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT, Time DATETIME NOT NULL, Temperature INT(3) NOT NULL, Humidity INT(3) NOT NULL, Light INT(5) NOT NULL)';
+	var query = ` 
+		CREATE TABLE IF NOT EXISTS sensors (
+			ID INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+			Time DATETIME NOT NULL,
+			Temperature INT(3) NOT NULL,
+			Humidity INT(3) NOT NULL,
+			Light INT(5) NOT NULL
+		);`
 	
 	if (err) throw err;
 	console.log('database connected');
   
-	con.query(sql, function (err) {
+	con.query(query, function (err) {
 		if (err) throw err;
 	});
 });
+
+var new_temp;
+var new_humi;
+var new_light;
+var cnt_check = 0;
 
 client.on('message', function (topic, message, packet) {
 	console.log('topic: ' + topic);
@@ -123,23 +83,23 @@ client.on('message', function (topic, message, packet) {
 	
 	if (topic == topic) {
 		cnt_check = cnt_check + 1;
-		newTemp = objData.Temperature;
-		newHumi = objData.Humidity;
-		newLight = objData.GasConcentration;
+		new_temp = objData.Temperature;
+		new_humi = objData.Humidity;
+		new_light = objData.GasConcentration;
 	}
 
 	if (cnt_check == 1) {
 		cnt_check = 0;
-		var n = new Date();
-		var month = n.getMonth() + 1;
-		var Date_and_Time = n.getFullYear() + '/' + month + '/' + n.getDate() + '-' + n.getHours() + ':' + n.getMinutes() + ':' + n.getSeconds();
-		var sql =
+		var date = new Date();
+		var month = date.getMonth() + 1;
+		var date_time = date.getFullYear() + '/' + month + '/' + date.getDate() + '-' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+		var query =
 			"INSERT INTO sensors (Time, Temperature, Humidity, Light) VALUES ('" +
-				Date_and_Time.toString() + "', '" + newTemp + "', '" + newHumi + "', '" + newLight + 
+				date_time.toString() + "', '" + new_temp + "', '" + new_humi + "', '" + new_light + 
 			"')";
-		con.query(sql, function (err, result) {
+		con.query(query, function (err, result) {
 			if (err) throw err;
-			console.log('data inserted: ' + Date_and_Time + ' ' + newTemp + ' ' + newHumi + ' ' + newLight);
+			console.log('data inserted: ' + date_time + ' ' + new_temp + ' ' + new_humi + ' ' + new_light);
 		});
 		exportData(con, io);
 	};

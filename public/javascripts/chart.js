@@ -81,25 +81,25 @@ var chart = Highcharts.chart('chart', {
     }],
 });
 
-socket.on("server-send-humi_graph", function (data) {
+socket.on("server-send-humi-graph", function (data) {
     chart.series[0].setData(data);
 });
 
-socket.on("server-send-temp_graph", function (data) {
+socket.on("server-send-temp-graph", function (data) {
     chart.series[1].setData(data);
 });
 
-socket.on("server-send-date_graph", function (data) {
+socket.on("server-send-date-graph", function (data) {
     chart.xAxis[0].setCategories(data);
 });
 
 // ------------- RTC ------------
-var timeDisplay = document.getElementById("time");
+var time_display = document.getElementById("time");
 
 function refreshTime() {
-    var dateString = new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
-    var formattedString = dateString.replace(", ", " - ");
-    timeDisplay.innerHTML = formattedString;
+    var date_str = new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+    date_str = date_str.replace(", ", " - ");
+    time_display.innerHTML = formattedString;
 }
 
 setInterval(refreshTime, 1000);
