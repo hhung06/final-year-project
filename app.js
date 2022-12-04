@@ -14,21 +14,6 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 server.listen(3000);
 
-// control relay
-io.on('connection', function(socket) {
-	socket.on('disconnect', function() {});
-
-	socket.on('led-1-change', function(data) {
-		if (data == 'on') {
-			console.log('Led 1 ON');
-			client.publish('relay', 'on');
-		} else {
-			console.log('Led 1 OFF');
-			client.publish('relay', 'off');
-		}
-	})
-});
-
 // mqtt
 var client = mqtt.connect('mqtt://broker.emqx.io:1883', {clientID: 'ndhieu131020'});
 var topic = 'ndhieu131020data';
@@ -58,9 +43,11 @@ con.connect(function(err) {
 		CREATE TABLE IF NOT EXISTS sensors (
 			ID INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 			Time DATETIME NOT NULL,
-			Temperature INT(3) NOT NULL,
-			Humidity INT(3) NOT NULL,
-			Light INT(5) NOT NULL
+			Temp INT(3) NOT NULL,
+			Humi INT(3) NOT NULL,
+			CH4 DECIMAL(5,3) NOT NULL,
+			Gas DECIMAL (5,3) NOT NULL,
+			CO DECIMAL (5,3) NOT NULL
 		);`
 	
 	if (err) throw err;
@@ -71,9 +58,11 @@ con.connect(function(err) {
 	});
 });
 
-var new_temp;
-var new_humi;
-var new_light;
+var tempData;
+var humiData;
+var ch4Data;
+var gasData;
+var coData;
 var cnt_check = 0;
 
 client.on('message', function (topic, message, packet) {
@@ -83,9 +72,11 @@ client.on('message', function (topic, message, packet) {
 	
 	if (topic == topic) {
 		cnt_check = cnt_check + 1;
-		new_temp = objData.Temperature;
-		new_humi = objData.Humidity;
-		new_light = objData.GasConcentration;
+		tempData = objData.Temperature;
+		humiData = objData.Humidity;
+		ch4Data = objData.CH4Concentration;
+		gasData = objData.GasConcentration;
+		coData = objData.COConcentration;
 	}
 
 	if (cnt_check == 1) {
@@ -94,12 +85,16 @@ client.on('message', function (topic, message, packet) {
 		var month = date.getMonth() + 1;
 		var date_time = date.getFullYear() + '/' + month + '/' + date.getDate() + '-' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 		var query =
-			"INSERT INTO sensors (Time, Temperature, Humidity, Light) VALUES ('" +
-				date_time.toString() + "', '" + new_temp + "', '" + new_humi + "', '" + new_light + 
-			"')";
+			"INSERT INTO sensors (Time, Temp, Humi, CH4, Gas, CO) VALUES ('" +
+				date_time.toString() + "', '" 
+				+ tempData + "', '" 
+				+ humiData + "', '" 
+				+ ch4Data  + "', '"
+				+ gasData  + "', '"
+				+ coData   + "')";
 		con.query(query, function (err, result) {
 			if (err) throw err;
-			console.log('data inserted: ' + date_time + ' ' + new_temp + ' ' + new_humi + ' ' + new_light);
+			console.log('data inserted: ' + date_time + ' ' + tempData + ' ' + humiData + ' ' + ch4Data + ' ' + gasData + ' ' + coData);
 		});
 		exportData(con, io);
 	};

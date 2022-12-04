@@ -4,17 +4,7 @@ var socket = io("http://localhost:3000");
 socket.on("server-update-data", function(data) {
     $('#currentTemp').html(data.temp);
     $('#currentHumi').html(data.humi);
-    $('#currentLight').html(data.light);
-})
-
-//client send data to server
-function led1() {
-    var checkBox = document.getElementById("led1");
-    if (checkBox.checked == true) {
-        //alert('LED On')
-        socket.emit("led-1-change", "on")
-    } else {
-        // alert('LED Off')
-        socket.emit("led-1-change", "off")
-    }
-}
+    $('#currentCH4').html(data.ch4);
+    $('#currentGas').html(data.gas);
+    $('#currentCO').html(data.co);
+});

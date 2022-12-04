@@ -7,93 +7,20 @@
     <link rel='stylesheet' href='/stylesheets/style.css'/>
   </head>
   <body>
-    <div class="container h-100">
-      <div class="row d-flex flex-row my-3">
-        <div class="col">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="row d-flex flex-row px-4 align-items-center">
-                <div class="mr-4 rounded-circle p-3" style="background-color: #E0F3F3;">
-                  <img src="/images/humidity.png" style="width: 24px; height: 24px;" alt="">
-                </div>
-                <div>
-                  <h5 class="card-title my-1 text-muted">Humidity</h5>
-                  <span class="h4 font-weight-bold" id="currentHumi">80</span>
-                  <span class="text-muted">%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="row d-flex flex-row px-4 align-items-center">
-                <div class="mr-4 rounded-circle p-3" style="background-color: #FFF1F2;">
-                  <img src="/images/temperature.png" style="width: 24px; height: 24px;" alt="">
-                </div>
-                <div>
-                  <h5 class="card-title my-1 text-muted">Temperature:</h5>
-                  <span class="h4 font-weight-bold" id="currentTemp">25</span>
-                  <span class="text-muted">℃</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="row d-flex flex-row px-4 align-items-center">
-                <div class="mr-4 rounded-circle p-3" style="background-color: #FFFBEB;">
-                  <img src="/images/sun.png" style="width: 24px; height: 24px;" alt="">
-                </div>
-                <div>
-                  <h5 class="card-title my-1 text-muted">Light</h5>
-                  <span class="h4 font-weight-bold" id="currentLight">100</span>
-                  <span class="text-muted">Lux</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row d-lfex flex-row">
-        <div class="col-9">
-          <figure class="highcharts-figure border bg-white rounded shadow-sm">
-            <div id="chart"></div>
-            <p class="highcharts-description text-center">
-              Chart showing data loaded dynamically. The individual data points can
-              be clicked to display more information.
-            </p>
-          </figure>
-        </div>
+    <div class="container-fluid h-100">
+      <div class="row d-flex flex-row">
         <div class="col-3 d-flex flex-column">
           <div class="row-sm mb-3">
             <div class="card shadow-sm">
               <div class="card-body">
-                <div class="row d-flex flex-row px-5 align-items-center">
-                  <div class="mr-4 rounded-circle p-3" style="background-color: #FFFBEB;">
-                    <img src="/images/led.png" style="width: 32px; height: 32px;" alt="">
+                <div class="row d-flex flex-row px-4 align-items-center">
+                  <div class="mr-4 rounded-circle p-3" style="background-color: #E0F3F3;">
+                    <img src="/images/humidity.png" style="width: 24px; height: 24px;" alt="">
                   </div>
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="led1" onclick="led1()">
-                    <label class="custom-control-label h5" for="led1">Led 1</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row-sm mb-3">
-            <div class="card shadow-sm">
-              <div class="card-body">
-                <div class="row d-flex flex-row px-5 align-items-center">
-                  <div class="mr-4 rounded-circle p-3" style="background-color: #FFFBEB;">
-                    <img src="/images/led.png" style="width: 32px; height: 32px;" alt="">
-                  </div>
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="led2" onclick="led2()">
-                    <label class="custom-control-label h5" for="led2">Led 2</label>
+                  <div>
+                    <h5 class="card-title my-1 text-muted">Humidity</h5>
+                    <span class="h4 font-weight-bold" id="currentHumi">80</span>
+                    <span class="text-muted">%</span>
                   </div>
                 </div>
               </div>
@@ -102,18 +29,72 @@
           <div class="row-sm mb-3">
             <div class="card shadow-sm">
               <div class="card-body">
-                <div class="row d-flex flex-row px-5 align-items-center">
-                  <div class="mr-4 rounded-circle p-3" style="background-color: #FFFBEB;">
-                    <img src="/images/led.png" style="width: 32px; height: 32px;" alt="">
+                <div class="row d-flex flex-row px-4 align-items-center">
+                  <div class="mr-4 rounded-circle p-3" style="background-color: #FFF1F2;">
+                    <img src="/images/temperature.png" style="width: 24px; height: 24px;" alt="">
                   </div>
-                  <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="led3" onclick="led3()">
-                    <label class="custom-control-label h5" for="led3">Led 3</label>
+                  <div>
+                    <h5 class="card-title my-1 text-muted">Temperature:</h5>
+                    <span class="h4 font-weight-bold" id="currentTemp">25</span>
+                    <span class="text-muted">℃</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div class="col-9">
+          <figure class="highcharts-figure border bg-white shadow-sm">
+            <div id="temp_humi"></div>
+          </figure>
+        </div>
+      </div>
+      <div class="row d-lfex flex-row">
+        <div class="col-3 d-flex flex-column">
+          <div class="row-sm mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="row d-flex flex-row px-4 align-items-center">
+                  <div>
+                    <h5 class="card-title my-1 text-muted">Methane</h5>
+                    <span class="h4 font-weight-bold" id="currentCH4">100</span>
+                    <span class="text-muted">ppm</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-sm mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="row d-flex flex-row px-4 align-items-center">
+                  <div>
+                    <h5 class="card-title my-1 text-muted">Hydrocarbon</h5>
+                    <span class="h4 font-weight-bold" id="currentGas">100</span>
+                    <span class="text-muted">ppm</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-sm mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="row d-flex flex-row px-4 align-items-center">
+                  <div>
+                    <h5 class="card-title my-1 text-muted">Carbonmonoxide</h5>
+                    <span class="h4 font-weight-bold" id="currentCO">100</span>
+                    <span class="text-muted">ppm</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-9">
+          <figure class="highcharts-figure border bg-white shadow-sm">
+            <div id="air"></div>
+          </figure>
         </div>
       </div>
     </div>

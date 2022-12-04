@@ -1,66 +1,107 @@
-var humi_graph = [];
-var temp_graph = [];
-var date_graph = [];
+var humiGraph = [];
+var tempGraph = [];
+var ch4Graph = [];
+var gasGraph = [];
+var coGraph = [];
+var dateGraph = [];
 
 function exportData(con, io) {
-    var new_temp;
-    var new_humi;
-    var date_time;
+    var tempData;
+    var humiData;
+    var ch4Data;
+    var gasData;
+    var coData;
+    var datetime;
     var query = 'SELECT * FROM sensors ORDER BY ID DESC LIMIT 1';
 
     con.query(query, function (err, result, fields) {
         if (err) throw err;
         console.log("data selected");
         result.forEach(function (value) {
-            date_time = value.Time.toString().slice(4, 24);
-            new_temp = value.Temperature;
-            new_humi = value.Humidity;
-            newLight = value.Light;
+            datetime = value.Time.toString().slice(4, 24);
+            tempData = value.Temp;
+            humiData = value.Humi;
+            ch4Data = value.CH4;
+            gasData = value.Gas;
+            coData = value.CO;
 
             io.sockets.emit('server-update-data', { 
                 id: value.ID,
-                time: date_time,
-                temp: value.Temperature,
-                humi: value.Humidity,
-                light: value.Light,
+                time: datetime,
+                temp: value.Temp,
+                humi: value.Humi,
+                ch4: value.CH4,
+                gas: value.Gas,
+                co: value.CO,
             })
         })
 
-        if (humi_graph.length < 10) {
-            humi_graph.push(new_humi);
+        if (humiGraph.length < 10) {
+            humiGraph.push(humiData);
         }
         else {
-            for (i = 0; i < 9; i++) {
-                humi_graph[i] = humi_graph[i + 1];
+            for (a = 0; a < 9; a++) {
+                humiGraph[a] = humiGraph[a + 1];
             }
-            humi_graph[9] = new_humi;
+            humiGraph[9] = humiData;
         }
 
-        if (temp_graph.length < 10) {
-            temp_graph.push(new_temp);
+        if (tempGraph.length < 10) {
+            tempGraph.push(tempData);
         }
         else {
-            for (u = 0; u < 9; u++) {
-                temp_graph[u] = temp_graph[u + 1];
+            for (b = 0; b < 9; c++) {
+                tempGraph[c] = tempGraph[c + 1];
             }
-            temp_graph[9] = new_temp;
+            tempGraph[9] = tempData;
         }
 
-        if (date_graph.length < 10) {
-            date_graph.push(date_time);
+        if (dateGraph.length < 10) {
+            dateGraph.push(datetime);
         }
         else {
-            for (x = 0; x < 9; x++) {
-                date_graph[x] = date_graph[x + 1];
+            for (d = 0; d < 9; d++) {
+                dateGraph[d] = dateGraph[d + 1];
             }
-            date_graph[9] = date_time;
+            dateGraph[9] = datetime;
         }
 
-        console.log(temp_graph)
+        if (ch4Graph.length < 10) {
+            ch4Graph.push(ch4Data);
+        }
+        else {
+            for (e = 0; e < 9; e++) {
+                ch4Graph[e] = ch4Graph[e + 1];
+            }
+            ch4Graph[9] = ch4Data;
+        }
 
-        io.sockets.emit("server-send-humi-graph", humi_graph);
-        io.sockets.emit("server-send-temp-graph", temp_graph);
-        io.sockets.emit("server-send-date-graph", date_graph);
+        if (gasGraph.length < 10) {
+            gasGraph.push(gasData);
+        }
+        else {
+            for (f = 0; f < 9; f++) {
+                gasGraph[f] = gasGraph[f + 1];
+            }
+            gasGraph[9] = gasData;
+        }
+
+        if (coGraph.length < 10) {
+            coGraph.push(coData);
+        }
+        else {
+            for (g = 0; g < 9; g++) {
+                coGraph[x] = coGraph[x + 1];
+            }
+            coGraph[9] = coData;
+        }
+
+        io.sockets.emit("server-send-humi-graph", humiGraph);
+        io.sockets.emit("server-send-temp-graph", tempGraph);
+        io.sockets.emit("server-send-ch4-graph", ch4Graph);
+        io.sockets.emit("server-send-gas-graph", gasGraph);
+        io.sockets.emit("server-send-co-graph", coGraph);
+        io.sockets.emit("server-send-date-graph", dateGraph);
     });
 };
 

@@ -1,9 +1,9 @@
-var chart = Highcharts.chart('chart', {
+var air = Highcharts.chart('air', {
     chart: {
         zoomType: 'xy'
     },
     title: {
-        text: 'Đồ thị nhiệt độ - độ ẩm'
+        text: 'Air Condition'
     },
 
     xAxis: [{
@@ -19,14 +19,99 @@ var chart = Highcharts.chart('chart', {
             }
         },
         title: {
-            text: 'Nhiệt độ (°C)',
+            text: 'Data (PPM)',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        },
+    }, {}],
+    tooltip: {
+        shared: true
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'left',
+        x: 120,
+        verticalAlign: 'top',
+        y: 100,
+        floating: true,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || // theme
+            'rgba(255,255,255,0.25)'
+    },
+    series: [{
+        name: 'CH4',
+        type: 'spline',
+        yAxis: 1,
+        data: [],
+        tooltip: {
+            valueSuffix: 'ppm'
+        }
+
+    }, {
+        name: 'CH',
+        type: 'spline',
+        data: [],
+        tooltip: {
+            valueSuffix: 'ppm'
+        },
+        zones: [{
+            value: 10,
+            color: '#ff0015'
+        }, {
+            value: 30,
+            color: '#141107'
+        }, {
+            color: '#ff0015'
+        }],
+    }, {
+        name: 'CO',
+        type: 'spline',
+        data: [],
+        tooltip: {
+            valueSuffix: 'ppm'
+        },
+        zones: [{
+            value: 10,
+            color: '#ffeffe'
+        }, {
+            value: 30,
+            color: '#141107'
+        }, {
+            color: '#ffefee'
+        }],
+    }],
+});
+
+var temphumichart = Highcharts.chart('temp_humi', {
+    chart: {
+        zoomType: 'xy'
+    },
+    title: {
+        text: 'Temperature - Humidity'
+    },
+
+    xAxis: [{
+        categories: [],
+        tickWidth: 1,
+        tickLength: 20
+    }],
+    yAxis: [{ // Primary yAxis
+        labels: {
+            format: '{value}',
+            style: {
+                color: Highcharts.getOptions().colors[1]
+            }
+        },
+        title: {
+            text: 'Temperature (°C)',
             style: {
                 color: Highcharts.getOptions().colors[1]
             }
         },
     }, { // Secondary yAxis
         title: {
-            text: 'Độ ẩm(%)',
+            text: 'Humidity(%)',
             style: {
                 color: Highcharts.getOptions().colors[0]
             }
@@ -54,7 +139,7 @@ var chart = Highcharts.chart('chart', {
             'rgba(255,255,255,0.25)'
     },
     series: [{
-        name: 'Độ ẩm',
+        name: 'Humidity',
         type: 'column',
         yAxis: 1,
         data: [],
@@ -63,7 +148,7 @@ var chart = Highcharts.chart('chart', {
         }
 
     }, {
-        name: 'Nhiệt độ',
+        name: 'Temperature',
         type: 'spline',
         data: [],
         tooltip: {
@@ -82,15 +167,28 @@ var chart = Highcharts.chart('chart', {
 });
 
 socket.on("server-send-humi-graph", function (data) {
-    chart.series[0].setData(data);
+    temphumichart.series[0].setData(data);
 });
 
 socket.on("server-send-temp-graph", function (data) {
-    chart.series[1].setData(data);
+    temphumichart.series[1].setData(data);
+});
+
+socket.on("server-send-ch4-graph", function (data) {
+    air.series[0].setData(data);
+});
+
+socket.on("server-send-gas-graph", function (data) {
+    air.series[1].setData(data);
+});
+
+socket.on("server-send-co-graph", function (data) {
+    air.series[2].setData(data);
 });
 
 socket.on("server-send-date-graph", function (data) {
-    chart.xAxis[0].setCategories(data);
+    temphumichart.xAxis[0].setCategories(data);
+    air.xAxis[0].setCategories(data);
 });
 
 // ------------- RTC ------------
