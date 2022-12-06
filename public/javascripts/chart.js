@@ -36,11 +36,10 @@ var air = Highcharts.chart('air', {
 });
 
 var temphumichart = Highcharts.chart('temp_humi', {
-    chart: {
-        zoomType: 'xy'
-    },
+
     title: {
-        text: 'Temperature - Humidity'
+        text: 'Temperature - Humidity',
+        align: 'center'
     },
 
     xAxis: [{
@@ -48,6 +47,7 @@ var temphumichart = Highcharts.chart('temp_humi', {
         tickWidth: 1,
         tickLength: 20
     }],
+
     yAxis: [{ // Primary yAxis
         labels: {
             format: '{value}',
