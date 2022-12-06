@@ -45,9 +45,9 @@ con.connect(function(err) {
 			Time DATETIME NOT NULL,
 			Temp INT(3) NOT NULL,
 			Humi INT(3) NOT NULL,
-			CH4 DECIMAL(5,3) NOT NULL,
-			Gas DECIMAL (5,3) NOT NULL,
-			CO DECIMAL (5,3) NOT NULL
+			CH4 DECIMAL(8,3) NOT NULL,
+			Gas DECIMAL (8,3) NOT NULL,
+			CO DECIMAL (8,3) NOT NULL
 		);`
 	
 	if (err) throw err;
@@ -94,7 +94,7 @@ client.on('message', function (topic, message, packet) {
 				+ coData   + "')";
 		con.query(query, function (err, result) {
 			if (err) throw err;
-			console.log('data inserted: ' + date_time + ' ' + tempData + ' ' + humiData + ' ' + ch4Data + ' ' + gasData + ' ' + coData);
+			console.log('data inserted: ' + date_time + ' Temp:' + tempData + ' Humi:' + humiData + ' CH4:' + ch4Data + ' CH:' + gasData + ' CO:' + coData);
 		});
 		exportData(con, io);
 	};
