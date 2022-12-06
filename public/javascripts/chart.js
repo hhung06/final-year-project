@@ -42,7 +42,6 @@ var air = Highcharts.chart('air', {
     series: [{
         name: 'CH4',
         type: 'spline',
-        yAxis: 1,
         data: [],
         tooltip: {
             valueSuffix: 'ppm'
@@ -66,7 +65,7 @@ var air = Highcharts.chart('air', {
         }],
     }, {
         name: 'CO',
-        type: 'spline',
+        type: 'column',
         data: [],
         tooltip: {
             valueSuffix: 'ppm'
@@ -190,14 +189,3 @@ socket.on("server-send-date-graph", function (data) {
     temphumichart.xAxis[0].setCategories(data);
     air.xAxis[0].setCategories(data);
 });
-
-// ------------- RTC ------------
-var time_display = document.getElementById("time");
-
-function refreshTime() {
-    var date_str = new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
-    date_str = date_str.replace(", ", " - ");
-    time_display.innerHTML = formattedString;
-}
-
-setInterval(refreshTime, 1000);

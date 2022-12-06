@@ -50,8 +50,8 @@ function exportData(con, io) {
             tempGraph.push(tempData);
         }
         else {
-            for (b = 0; b < 9; c++) {
-                tempGraph[c] = tempGraph[c + 1];
+            for (b = 0; b < 9; b++) {
+                tempGraph[b] = tempGraph[b + 1];
             }
             tempGraph[9] = tempData;
         }
@@ -60,8 +60,8 @@ function exportData(con, io) {
             dateGraph.push(datetime);
         }
         else {
-            for (d = 0; d < 9; d++) {
-                dateGraph[d] = dateGraph[d + 1];
+            for (c = 0; c < 9; c++) {
+                dateGraph[c] = dateGraph[c + 1];
             }
             dateGraph[9] = datetime;
         }
@@ -70,8 +70,8 @@ function exportData(con, io) {
             ch4Graph.push(ch4Data);
         }
         else {
-            for (e = 0; e < 9; e++) {
-                ch4Graph[e] = ch4Graph[e + 1];
+            for (d = 0; d < 9; d++) {
+                ch4Graph[d] = ch4Graph[d + 1];
             }
             ch4Graph[9] = ch4Data;
         }
@@ -80,8 +80,8 @@ function exportData(con, io) {
             gasGraph.push(gasData);
         }
         else {
-            for (f = 0; f < 9; f++) {
-                gasGraph[f] = gasGraph[f + 1];
+            for (e = 0; e < 9; e++) {
+                gasGraph[e] = gasGraph[e + 1];
             }
             gasGraph[9] = gasData;
         }
@@ -90,8 +90,8 @@ function exportData(con, io) {
             coGraph.push(coData);
         }
         else {
-            for (g = 0; g < 9; g++) {
-                coGraph[x] = coGraph[x + 1];
+            for (f = 0; f < 9; f++) {
+                coGraph[f] = coGraph[f + 1];
             }
             coGraph[9] = coData;
         }
