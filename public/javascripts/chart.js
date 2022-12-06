@@ -1,9 +1,14 @@
 var air = Highcharts.chart('air', {
-    chart: {
-        zoomType: 'xy'
-    },
+
     title: {
-        text: 'Air Condition'
+        text: 'Air Condition',
+        align: 'center'
+    },
+
+    yAxis: {
+        title: {
+            text: '(ppm)'
+        }
     },
 
     xAxis: [{
@@ -11,74 +16,22 @@ var air = Highcharts.chart('air', {
         tickWidth: 1,
         tickLength: 20
     }],
-    yAxis: [{ // Primary yAxis
-        labels: {
-            format: '{value}',
-            style: {
-                color: Highcharts.getOptions().colors[1]
-            }
-        },
-        title: {
-            text: 'Data (PPM)',
-            style: {
-                color: Highcharts.getOptions().colors[1]
-            }
-        },
-    }, {}],
-    tooltip: {
-        shared: true
-    },
+
     legend: {
         layout: 'vertical',
-        align: 'left',
-        x: 120,
-        verticalAlign: 'top',
-        y: 100,
-        floating: true,
-        backgroundColor:
-            Highcharts.defaultOptions.legend.backgroundColor || // theme
-            'rgba(255,255,255,0.25)'
+        align: 'right',
+        verticalAlign: 'middle'
     },
+
     series: [{
         name: 'CH4',
-        type: 'spline',
         data: [],
-        tooltip: {
-            valueSuffix: 'ppm'
-        }
-
     }, {
         name: 'CH',
-        type: 'spline',
         data: [],
-        tooltip: {
-            valueSuffix: 'ppm'
-        },
-        zones: [{
-            value: 10,
-            color: '#ff0015'
-        }, {
-            value: 30,
-            color: '#141107'
-        }, {
-            color: '#ff0015'
-        }],
     }, {
         name: 'CO',
-        type: 'column',
         data: [],
-        tooltip: {
-            valueSuffix: 'ppm'
-        },
-        zones: [{
-            value: 10,
-            color: '#ffeffe'
-        }, {
-            value: 30,
-            color: '#141107'
-        }, {
-            color: '#ffefee'
-        }],
     }],
 });
 
@@ -165,24 +118,19 @@ var temphumichart = Highcharts.chart('temp_humi', {
     }],
 });
 
-socket.on("server-send-humi-graph", function (data) {
-    temphumichart.series[0].setData(data);
+socket.on("server-send-temp-humi-graph", function (data) {
+    temphumichart.series[0].setData(data.temp);
+    temphumichart.series[1].setData(data.humi);
 });
 
-socket.on("server-send-temp-graph", function (data) {
-    temphumichart.series[1].setData(data);
-});
+socket.on("server-send-air-graph", function (data) {
+    var ch4 = data.ch4.map(item => + item)
+    var gas = data.gas.map(item => + item)
+    var co = data.co.map(item => + item)
 
-socket.on("server-send-ch4-graph", function (data) {
-    air.series[0].setData(data);
-});
-
-socket.on("server-send-gas-graph", function (data) {
-    air.series[1].setData(data);
-});
-
-socket.on("server-send-co-graph", function (data) {
-    air.series[2].setData(data);
+    air.series[0].setData(ch4);
+    air.series[1].setData(gas);
+    air.series[2].setData(co);
 });
 
 socket.on("server-send-date-graph", function (data) {

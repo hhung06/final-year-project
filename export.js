@@ -96,11 +96,15 @@ function exportData(con, io) {
             coGraph[9] = coData;
         }
 
-        io.sockets.emit("server-send-humi-graph", humiGraph);
-        io.sockets.emit("server-send-temp-graph", tempGraph);
-        io.sockets.emit("server-send-ch4-graph", ch4Graph);
-        io.sockets.emit("server-send-gas-graph", gasGraph);
-        io.sockets.emit("server-send-co-graph", coGraph);
+        io.sockets.emit("server-send-temp-humi-graph", {
+            humi: humiGraph,
+            temp: tempGraph,
+        });
+        io.sockets.emit("server-send-air-graph", {
+            ch4: ch4Graph,
+            gas: gasGraph,
+            co: coGraph
+        });
         io.sockets.emit("server-send-date-graph", dateGraph);
     });
 };
