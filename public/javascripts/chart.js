@@ -119,8 +119,8 @@ var temphumichart = Highcharts.chart('temp_humi', {
 });
 
 socket.on("server-send-temp-humi-graph", function (data) {
-    temphumichart.series[0].setData(data.temp);
-    temphumichart.series[1].setData(data.humi);
+    temphumichart.series[0].setData(data.humi);
+    temphumichart.series[1].setData(data.temp);
 });
 
 socket.on("server-send-air-graph", function (data) {
