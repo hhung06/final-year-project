@@ -3,7 +3,6 @@ const message = document.querySelector('.message')
 const submitBtn = document.querySelector('.submit')
 const form = document.querySelector('#form')
 
-let prevDate = 0
 
 //client receive data from server
 socket.on("server-update-data", function(data) {
@@ -13,11 +12,8 @@ socket.on("server-update-data", function(data) {
     $('#currentGas').html(data.gas);
     $('#currentCO').html(data.co);
 
-    let date = new Date()
 
-    if (+data.co > 1 && date.getTime() - prevDate > 60) {
-        console.log(date.getTime() - prevDate);
-        prevDate = date.getTime()
+    if (+data.co > 1 ) {
         message.value = `
         Nhiệt độ: ${data.temp}
         Độ ẩm: ${data.humi}
